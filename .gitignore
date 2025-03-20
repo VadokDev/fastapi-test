@@ -1,0 +1,12 @@
+.env
+.aws-sam/
+__pycache__/
+.pytest_cache/
+.vscode/
+venv/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.swp
+.DS_Store

@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Resources:
+  FastAPIApplication:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Environment:
+        Variables:
+          MONGO_URL: !Ref MongoUrl
+          JWT_SECRET: !Ref JwtSecret
+          STAGE: prod
+      Handler: main.handler
+      Runtime: python3.10
+      MemorySize: 512
+      Timeout: 200
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            RestApiId:
+              Ref: FastAPIRestApi
+  FastAPIRestApi:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: api
+      Cors:
+        AllowMethods: "'OPTIONS,POST,GET,PUT,DELETE'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+Parameters:
+  MongoUrl:
+    Type: String
+  JwtSecret:
+    Type: String
